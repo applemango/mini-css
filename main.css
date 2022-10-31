@@ -2,15 +2,49 @@ html, body {padding: 0;margin: 0;font-family: -apple-system, BlinkMacSystemFont,
 a {color: inherit;text-decoration: none;}
 * {box-sizing: border-box;}
 ::-webkit-scrollbar {width: 5px;height: 5px;background-color: transparent;}
-::-webkit-scrollbar-thumb {background-color: #ccc;border-radius: 3px;}
+::-webkit-scrollbar-thumb {background-color: var(--scrollbar-color);border-radius: 3px;}
 ::-webkit-scrollbar-track {background-color: transparent;}
-
+:root {
+    --button-color: #236ffc;
+    --border-button: 1px solid var(--button-color);
+    --background-color: #fff;
+    --border-color: #eee;
+    --border: 1px solid var(--border-color);
+    --outline-color: #3498db;
+    --outline: 3px solid var(--outline-color);
+    --outline-none: 0px solid var(--outline-color);
+    --text-color: #222;
+    --title-color: #333;
+    --title-color2: #444;
+    --title-color3: #555;
+    --scrollbar-color: #ccc;
+    --dark-border-color: #222;
+    --dark-border: 1px solid var(--dark-border-color);
+}
+@media (prefers-color-scheme: dark) {
+    :root {
+        --background-color: #222;
+        --dark-border-color: #fff;
+        --outline-color: #236ff3;
+        --border: 3px solid #fff;
+        --text-color: #fff;
+        --title-color: #fff;
+        --title-color2: #fff;
+        --title-color3: #fff;
+        --scrollbar-color: #fff;
+    }
+}
+[center] {
+    align-items: center;
+    text-align: center;
+}
 html {
     scroll-behavior: smooth;
     width: 90%;
     max-width: 800px;
     margin: 0 auto;
     margin-bottom: 48px;
+    background-color: var(--background-color);
 }
 
 header {
@@ -24,12 +58,41 @@ header a {
     margin: 10px;
     font-weight: 500;
     font-size: 16px;
-    color: #222;
+    color: var(--text-color);
 }
-
+blockquote:not(figure blockquote) {
+    border-left: 5px solid var(--border-color);
+    margin-left: 0;
+    padding-left: 40px;
+}
+blockquote:not(figure blockquote) p {
+    margin: 4px 0;
+}
+a {
+    position: relative;
+    color: inherit;
+    text-decoration: none;
+}
+a::before {
+    content: "";
+    position: absolute;
+    bottom: 0px;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    background: #24292f;
+    transform: scaleX(0);
+    transform-origin: bottom right;
+    transition: transform .4s,-webkit-transform .4s;
+}
+a:hover::before {
+    transform-origin: bottom left;
+    transform: scaleX(1)
+}
 p {
-    color: #222;
+    color: var(--text-color);
     font-size: 1.15rem;
+    margin: 12px 0;
 }
 :is(h1, h2, h3, h4, h5, h6)[id]::after {
     opacity: 0;
@@ -41,13 +104,13 @@ p {
     opacity: 1;
 }
 :is(h1, h2, h3) {
-    color: #333;
+    color: var(--title-color);
 }
 :is(h4) {
-    color: #444;
+    color: var(--title-color2);
 }
 :is(h5, h6) {
-    color: #555;
+    color: var(--title-color3);
 }
 h1 {
     font-size: 2rem;
@@ -79,7 +142,7 @@ form {
     width: 100%;
     max-width: 600px;
     margin: 0 auto;
-    border: 1px solid #eee;
+    border: var(--border);
     padding: 28px;
     border-radius: 4px;
 }
@@ -88,8 +151,11 @@ label {
     display: inline-block;
     width: calc(100% - 25px);
     margin: 10px 0;
+    color: var(--text-color);
 }
-
+input, textarea {
+    color: var(--text-color);
+}
 input:not([type="checkbox"]) {
     width: 100%;
 }
@@ -97,39 +163,41 @@ input:not([type="checkbox"]) {
 input[type="text"], input[type="password"], input[type="email"], input[type="number"] {
     width: 100%;
     height: 40px;
-    border: 1px solid #eee;
+    border: var(--border);
     border-radius: 4px;
-    outline: 0px solid #3498db;
+    outline: var(--outline-none);
     margin: 8px 0;
     transition: outline 0.1s ease;
     font-size: 18px;
-    color: #444;
+    color: var(--title-color3);
     padding-left: 10px;
+    background-color: var(--background-color);
 }
 :is(input[type="text"], input[type="password"], input[type="email"], input[type="number"]):is(:active, :focus) {
-    outline: 3px solid #3498db;
+    outline: var(--outline);
 }
 
 input[type="file"] {
     width: 100%;
     height: 100px;
-    border: 1px solid #eee;
+    border: var(--border);
     border-radius: 4px;
     margin: 10px 0;
     padding-left: calc(50% - 75px);
     padding-top: 38px;
     position: relative;
-    outline: 0px solid #3498db;
+    outline: var(--outline-none);
     transition: outline 0.1s ease;
+    color: var(--text-color)
 }
 input[type="file"]:is(:active, :focus) {
-    outline: 3px solid #3498db;
+    outline: var(--outline);
 }
 input[type="file"]::after {
     content: "upload";
-    background-color: #fff;
-    color: #222;
-    border: 1px solid #222;
+    background-color: var(--background-color);
+    color: var(--text-color);
+    border: var(--dark-border);
     padding: 6px 10px;
     border-radius: 18px;
     margin-left: 10px;
@@ -147,13 +215,14 @@ input[type="range"] {
     outline: none;
     margin-right: 0;
     margin-left: 0;
+    background-color: var(--background-color);
 }
 input[type="range"]::-webkit-slider-runnable-track {
     display: flex;
     align-items: center;
     height: 10px;
     border-radius: 10px;
-    border: 1px solid #eee;
+    border: var(--border);
 }
 input[type="range"]::-webkit-slider-thumb {
     -webkit-appearance: none;
@@ -161,35 +230,41 @@ input[type="range"]::-webkit-slider-thumb {
     top: -12px;
     width: 30px;
     height: 30px;
-    background-color: #fff;
+    background-color: var(--background-color);
     background-image: linear-gradient(-45deg, rgba(white, 0.8), transparent);
     border-radius: 50%;
     box-shadow: -1px -1px 2px white, 1px 1px 2px rgba(black, 0.3);
-    border: 1px solid #eee;
+    border: var(--border);
     transition: scale 0.3s ease;
-    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+    /*box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;*/
 }
-
+input[type="range"]::-webkit-slider-thumb:hover {
+    scale: 1.2;
+}
+input[type="range"]::-webkit-slider-thumb:active {
+    scale: 1.3;
+}
 textarea {
     resize: none;
     width: 100%;
-    border: 1px solid #eee;
+    border: var(--border);
     border-radius: 4px;
-    outline: 0px solid #3498db;
+    outline: var(--outline-none);
     transition: outline .1s ease;
     font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
     font-size: 16px;
     padding: 2px 8px;
+    background-color: var(--background-color);
 }
 textarea:is(:active, :focus) {
-    outline: 3px solid #3498db;
+    outline: var(--outline);
 }
 
 button {
     cursor: pointer;
-    border: 1px solid #236ffc;
-    background-color: #fff;
-    color: #236ffc;
+    border: var(--border-button);
+    background-color: var(--background-color);
+    color: var(--button-color);
     border-radius: 4px;
     font-size: 18px;
     font-weight: 500;
@@ -198,10 +273,6 @@ button {
     margin: 10px 0;
 }
 button:hover {
-    color: #fff;
-    background-color: #236ffc;
-}
-
-@media (prefers-color-scheme: dark) {
-
+    color: var(--background-color);
+    background-color: var(--button-color);
 }
